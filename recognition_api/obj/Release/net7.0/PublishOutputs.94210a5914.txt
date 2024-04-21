@@ -1,0 +1,13 @@
+C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Release\net7.0\PubTmp\Out\recognition_api.exe
+C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Release\net7.0\PubTmp\Out\appsettings.Development.json
+C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Release\net7.0\PubTmp\Out\appsettings.json
+C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Release\net7.0\PubTmp\Out\recognition_api.dll
+C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Release\net7.0\PubTmp\Out\recognition_api.deps.json
+C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Release\net7.0\PubTmp\Out\recognition_api.runtimeconfig.json
+C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Release\net7.0\PubTmp\Out\recognition_api.pdb
+C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Release\net7.0\PubTmp\Out\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Release\net7.0\PubTmp\Out\Microsoft.OpenApi.dll
+C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Release\net7.0\PubTmp\Out\RabbitMQ.Client.dll
+C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Release\net7.0\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Release\net7.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Release\net7.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll
