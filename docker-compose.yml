@@ -1,0 +1,51 @@
+networks:
+  custom_network:
+    driver: bridge
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq
+    command: rabbitmq-server
+    ports:
+      - 5672:5672
+      - 15672:15672
+    restart: unless-stopped
+    # network_mode: host
+    networks:
+      - custom_network
+
+  image_recognition_1:
+    restart: unless-stopped
+    #image: img_reciv:v2
+    build:
+      context: ./image_engine
+    # network_mode: host
+    container_name: image_recognition_2
+    #command: python image_processing_identifier.py
+    networks:
+      - custom_network
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./image_engine/dev.env:/app/dev.env
+
+  recognition-api:
+    restart: unless-stopped
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8081:80"
+    container_name: dotnet_api_2
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - ./cache_data:/App/cache_data
+    networks:
+      - custom_network
+    depends_on:
+      - rabbitmq
