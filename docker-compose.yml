@@ -11,13 +11,13 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-    restart: unless-stopped
+    restart: on-failure
     # network_mode: host
     networks:
       - custom_network
 
   image_recognition_1:
-    restart: unless-stopped
+    restart: on-failure
     #image: img_reciv:v2
     build:
       context: ./image_engine
@@ -30,9 +30,10 @@ services:
       - rabbitmq
     volumes:
       - ./image_engine/dev.env:/app/dev.env
+      - ./image_engine/image_processing_identifier.py:/app/image_processing_identifier.py
 
   recognition-api:
-    restart: unless-stopped
+    restart: on-failure
     build:
       context: ./api
       dockerfile: Dockerfile
@@ -49,3 +50,7 @@ services:
       - custom_network
     depends_on:
       - rabbitmq
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 500M
