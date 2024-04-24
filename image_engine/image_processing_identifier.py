@@ -7,12 +7,7 @@ import io
 import numpy as np
 from dotenv import load_dotenv
 import sys
-
-
-
-#rabbitmq_host = os.getenv('RABBITMQ_HOST')
-#rabbitmq_port = os.getenv('RABBITMQ_PORT')        
-
+import json
 
 
 def find_faces_in_image(img_data, rabbitmq_connection_string):
@@ -22,70 +17,43 @@ def find_faces_in_image(img_data, rabbitmq_connection_string):
     try:
         if(face_recognition.face_locations(c) and  face_recognition.face_encodings(c)):
             face_locations = face_recognition.face_locations(c)
-            face_encoding = face_recognition.face_encodings(c)[0]
-
-            encoding_from_file, names = get_face_encoding_from_local_files()
-            indexy = []
-            for j in range(len(encoding_from_file)):
-                face_distances = face_distance(encoding_from_file[j], face_encoding)
-                indexy.append(face_distances)            
-                #print(f"face_distances for {names[j]}",face_distances)
-            best_score = np.amin(indexy)
-            best_match_index = np.argmin(indexy)
-                #print(f"Face of {names[best_match_index]} was found; best score {best_score}")
-            top, right, bottom, left = face_locations[0]
-            if(best_score>0.5):
-                respond_data = "Unknown"+"&"+ str(top)+","+str(right)+","+str(bottom)+","+str(left) 
-            else: respond_data =  names[best_match_index]+"&"+ str(top)+","+str(right)+","+str(bottom)+","+str(left)
-            print(respond_data)   
+            face_encoding = face_recognition.face_encodings(c)[0]                                                                           
+            top, right, bottom, left = face_locations[0]            
+            new_respond = make_json(top, right, bottom, left, face_encoding)
+            # print(new_respond)   
             sys.stdout.flush()
-            #image.show()    
-            send_response(respond_data, rabbitmq_connection_string)
+            send_response(new_respond, rabbitmq_connection_string)
         else: 
-            respond_data = "-"+"&"+ "-,-,-,-" 
-            print("from else: ",respond_data)   
+            respond_data = make_faileure_json()
+            print("face not recon on image: ",respond_data)   
             sys.stdout.flush()
             send_response(respond_data, rabbitmq_connection_string)
     except Exception as e:
-        print("Wystąpił błąd z exception:", str(e))
+        print("Error in exception:", str(e))
         sys.stdout.flush()
-        respond_data = "-"+"&"+ "-,-,-,-" 
+        respond_data = make_faileure_json()
         send_response(respond_data, rabbitmq_connection_string)
     
-    
-def face_distance(face_encodings, face_to_compare):
-    """
-    Given a list of face encodings, compare them to a known face encoding and get a euclidean distance
-    for each comparison face. The distance tells you how similar the faces are.
-    :param face_encodings: List of face encodings to compare
-    :param face_to_compare: A face encoding to compare against
-    :return: A numpy ndarray with the distance for each face in the same order as the 'faces' array
-    """
-    return np.linalg.norm(face_encodings - face_to_compare)
-    
-def get_face_encoding_from_local_files():
-    with open('local_db_encoding.txt', 'r') as f:
-        text = f.read()
-    text = text.split("$")
-    
-    np_arrays_from_file = []
-    for obj in text:
-        array = np.fromstring(obj,sep=' ', dtype=float)
-        np_arrays_from_file.append(array)
-    
-    with open('local_db_names.txt', 'r') as f:
-        names = f.read()
-    names = names.split("\n")
-    return np_arrays_from_file, names
-    
-def save_face_encoding_to_string_and_txt_file(face_encoding):
-    np.savetxt('test1.txt', face_encoding)
-    with open('test1.txt', 'r') as f:
-        text = f.read()
-    with open('local_db_encoding.txt', 'a') as f:
-        f.write(text)
-        f.write("$")
-    
+def make_json( top, right, bottom, left, encoding):
+    print(top,right,bottom,left)
+    list_data = encoding.tolist()
+    data={"top":top,
+          "right":right,
+          "bottom":bottom,
+          "left":left,
+          "encoding":list_data}
+    json_data = json.dumps(data)
+    return json_data
+     
+def make_faileure_json():
+    print("Face not detect!")
+    data={"top":1,
+          "right":1,
+          "bottom":1,
+          "left":1,
+          "encoding":[1]}
+    json_data = json.dumps(data)
+    return json_data
     
 def send_response(message,rabbitmq_connection_string):
     #connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
