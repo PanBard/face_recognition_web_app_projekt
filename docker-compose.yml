@@ -1,29 +1,25 @@
-networks:
-  custom_network:
-    driver: bridge
+version: '3'
 
 services:
 
-  rabbitmq:
-    image: rabbitmq:3.12-management
-    container_name: rabbitmq
-    command: rabbitmq-server
-    ports:
-      - 5672:5672
-      - 15672:15672
+  frontend:
     restart: on-failure
-    # network_mode: host
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
     networks:
       - custom_network
+    depends_on:
+      - dotnet_gateway_api
+    ports:
+      - "4201:4200"
 
-  image_recognition_1:
+  face_recognition_model:
     restart: on-failure
-    #image: img_reciv:v2
     build:
       context: ./image_engine
-    # network_mode: host
-    container_name: image_recognition_2
-    #command: python image_processing_identifier.py
+    container_name: face_recognition_model
     networks:
       - custom_network
     depends_on:
@@ -32,16 +28,14 @@ services:
       - ./image_engine/dev.env:/app/dev.env
       - ./image_engine/image_processing_identifier.py:/app/image_processing_identifier.py
 
-  recognition-api:
+  dotnet_gateway_api:
     restart: on-failure
     build:
       context: ./api
       dockerfile: Dockerfile
     ports:
-      - "80:80"
-      - "443:443"
       - "8081:80"
-    container_name: dotnet_api_2
+    container_name: dotnet_gateway_api
     environment:
       - ASPNETCORE_URLS=http://+:80
     volumes:
@@ -50,7 +44,43 @@ services:
       - custom_network
     depends_on:
       - rabbitmq
-    # deploy:
-    #   resources:
-    #     limits:
-    #       memory: 500M
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq
+    command: rabbitmq-server
+    # ports:
+    #   - 5672:5672
+    #   - 15672:15672
+    restart: on-failure
+    networks:
+      - custom_network
+
+  db:
+    image: postgres
+    restart: on-failure
+    container_name: postgre_db
+    shm_size: 128mb
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    # ports:
+    #   - "5432:5432"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - custom_network
+  # adminer:
+  #   image: adminer
+  #   restart: on-failure
+  #   ports:
+  #     - 8383:8080
+  #   networks:
+  #     - custom_network
+
+
+
+networks:
+  custom_network:
+    driver: bridge
