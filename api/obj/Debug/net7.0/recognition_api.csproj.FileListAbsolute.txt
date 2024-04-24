@@ -32,3 +32,8 @@ C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Debug\net7.0\recog
 C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Debug\net7.0\recognition_api.genruntimeconfig.cache
 C:\Users\Jan\source\repos\recognition_api\recognition_api\obj\Debug\net7.0\ref\recognition_api.dll
 C:\Users\Jan\source\repos\recognition_api\recognition_api\bin\Debug\net7.0\RabbitMQ.Client.dll
+C:\Users\Jan\source\repos\recognition_api\recognition_api\bin\Debug\net7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Jan\source\repos\recognition_api\recognition_api\bin\Debug\net7.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Jan\source\repos\recognition_api\recognition_api\bin\Debug\net7.0\Npgsql.dll
+C:\Users\Jan\source\repos\recognition_api\recognition_api\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\Jan\source\repos\recognition_api\recognition_api\bin\Debug\net7.0\MathNet.Numerics.dll
