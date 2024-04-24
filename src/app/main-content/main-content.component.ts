@@ -7,9 +7,11 @@ import { WebCamComponent } from '../web-cam/web-cam.component';
   standalone: true,
   imports: [NgIf,ItemsListComponent, WebCamComponent],
   template: `
-  <section class="bg-white dark:bg-gray-900 flex justify-center items-center ">
+  <section class="bg-white dark:bg-gray-900 flex justify-center items-center flex-col p-10">
     <!-- <app-items-list *ngIf="showComponent"/> -->
-    <app-web-cam/>
+    <!-- <app-web-cam/> -->
+    <h2 class="mb-4 text-4xl tracking-tight font-bold text-gray-900 dark:text-white">Welcome to the home page!</h2>
+    <h2 class="mb-4 text-4xl tracking-tight  text-gray-900 dark:text-white">Congratulations, you have successfully logged in using facial recognition!</h2>
   </section>
   `,
   styles: ``

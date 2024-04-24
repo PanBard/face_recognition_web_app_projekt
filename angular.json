@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "shop_project": {
+    "recognition_app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -41,7 +41,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/shop_project",
+            "outputPath": "dist/recognition_app",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -86,10 +86,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "shop_project:build:production"
+              "buildTarget": "recognition_app:build:production"
             },
             "development": {
-              "buildTarget": "shop_project:build:development"
+              "buildTarget": "recognition_app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -97,7 +97,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "shop_project:build"
+            "buildTarget": "recognition_app:build"
           }
         }
       }
